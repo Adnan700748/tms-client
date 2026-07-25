@@ -1,0 +1,14 @@
+<!--to connect the signals from your TypeScript class to the UI-->
+<div class="dashboard">
+    <!--Reading a signal studentName()-->
+  <h1>Welcome, {{ studentName() }}</h1>
+
+  <p>Credits Earned: {{ earnedCredits() }}</p>
+
+  <p>Graduation Status: {{ graduationStatus() }}</p>
+
+  <!--Event Binding-->
+  <button (click)="registerForClass()">
+    Register for a Class (+3 credits)
+  </button>
+</div>
