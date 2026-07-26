@@ -13,7 +13,7 @@ export const routes: Routes = [
     path: "courses/:id",
     loadComponent: () =>
       import("./features/course-detail/course-detail").then(
-        (m) => m.CourseDetail
+        (m) => m.CourseDetailComponent
       ),
   },
 
