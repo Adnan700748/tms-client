@@ -1,9 +1,5 @@
 <div class="dashboard">
   <h1>Welcome, {{ studentName() }}</h1>
-  
-  <p>
-  <a routerLink="/enroll">Go to Enrollment Form</a>
-  </p>
 
   <p>Credits Earned: {{ earnedCredits() }}</p>
 
@@ -12,48 +8,51 @@
   <button (click)="registerForClass()">
     Register for a Class (+3 credits)
   </button>
-</div>
 
-<hr>
+  <hr />
 
-<h2>Course Catalog</h2>
+  <h2>Course Catalog</h2>
 
-@if (availableCourses().length === 0) {
+  @if (coursesResource.isLoading()) {
 
-<div class="empty-state">
-  <p>
-    No courses are available this term.
-    Check back during registration.
-  </p>
-</div>
+  <div class="spinner">
+    Fetching courses from the server...
+  </div>
 
-} @else {
+  } @else if (coursesResource.error()) {
 
-<div class="grid">
+  <div class="error">
+    Could not load courses. Make sure your .NET API is running.
+  </div>
 
-  @for (course of availableCourses(); track course.id) {
+  } @else {
 
-  <tms-course-card
-    [course]="course"
-    (enrollClicked)="handleEnroll($event)">
-  </tms-course-card>
+  <div class="grid">
 
-  } @empty {
+    @for (course of coursesResource.value()!; track course.id) {
 
-  <p>No results match your search.</p>
+    <tms-course-card
+      [course]="course"
+      (enrollClicked)="handleEnroll($event)"
+    />
+
+    } @empty {
+
+    <p>No courses are available this term.</p>
+
+    }
+
+  </div>
 
   }
 
+  @if (selectedCourse(); as picked) {
+
+  <p class="selection-hint" role="status">
+    Last enrollment request:
+    <strong>{{ picked.title }}</strong>
+    ({{ picked.code }})
+  </p>
+
+  }
 </div>
-
-}
-
-@if (selectedCourse(); as picked) {
-
-<p class="selection-hint" role="status">
-  Last enrollment request:
-  <strong>{{ picked.title }}</strong>
-  ({{ picked.code }})
-</p>
-
-}

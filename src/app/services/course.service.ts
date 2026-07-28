@@ -9,7 +9,7 @@ import { Course, CourseDetail, PagedResponse } from "../models/course.model";
 export class CourseService {
     // inject(HttpClient) requests Angular's HTTP client
     private http = inject(HttpClient);
-    private baseUrl = "https://localhost:5187/api/courses";
+    private baseUrl = "http://localhost:5187/api/v1/courses";
 
     getAll(page = 1, pageSize = 50) {
         return this.http
