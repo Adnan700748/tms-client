@@ -6,8 +6,8 @@ import { Course } from '../../models/course.model';
   selector: 'tms-course-card',
   standalone: true,
   imports: [RouterLink],
-  templateUrl: './course-card.component.html',
-  styleUrl: './course-card.component.scss'
+  templateUrl: './course-card.html',
+  styleUrl: './course-card.scss'
 })
 export class CourseCardComponent {
 
