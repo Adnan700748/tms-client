@@ -1,25 +1,33 @@
-import { Routes } from "@angular/router";
+import { Routes } from '@angular/router';
 
 export const routes: Routes = [
+
   {
-    path: "dashboard",
+    path: 'dashboard',
     loadComponent: () =>
-      import("./features/student-dashboard/student-dashboard.component").then(
-        (m) => m.StudentDashboardComponent
-      ),
+      import('./features/student-dashboard/student-dashboard.component')
+        .then(m => m.StudentDashboardComponent)
   },
 
   {
-    path: "courses/:id",
+    path: 'courses/:id',
     loadComponent: () =>
-      import("./features/course-detail/course-detail").then(
-        (m) => m.CourseDetailComponent
-      ),
+      import('./features/course-detail/course-detail')
+        .then(m => m.CourseDetailComponent)
+  },
+
+  // Enrollment Form
+  {
+    path: 'enroll',
+    loadComponent: () =>
+      import('./features/enrollment-form/enrollment-form.component')
+        .then(m => m.EnrollmentFormComponent)
   },
 
   {
-    path: "",
-    redirectTo: "dashboard",
-    pathMatch: "full",
-  },
+    path: '',
+    redirectTo: 'dashboard',
+    pathMatch: 'full'
+  }
+
 ];

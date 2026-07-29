@@ -5,8 +5,8 @@ import { RouterLink } from "@angular/router";
   selector: "app-course-detail",
   standalone: true,
   imports: [RouterLink],
-  templateUrl: "./course-detail.component.html",
-  styleUrl: "./course-detail.component.scss",
+  templateUrl: "./course-detail.html",
+  styleUrl: "./course-detail.scss",
 })
 export class CourseDetailComponent {
 

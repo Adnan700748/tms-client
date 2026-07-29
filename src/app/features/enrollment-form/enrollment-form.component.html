@@ -1,0 +1,174 @@
+<h2>Course Enrollment</h2>
+
+<!--
+  Once the form has been successfully submitted,
+  hide the form and display a confirmation message.
+-->
+@if (submitted()) {
+
+<div class="success">
+  Enrollment submitted. Check the console for the payload.
+</div>
+
+} @else {
+
+<!--
+  Connect this HTML form to the FormGroup defined
+  in enrollment-form.component.ts.
+
+  ngSubmit executes the submit() method when:
+  - the user clicks the submit button
+  - OR presses Enter inside the form
+-->
+<form [formGroup]="form" (ngSubmit)="submit()">
+
+  <!-- =========================
+       Student ID
+       ========================= -->
+
+  <label for="studentId">Student ID</label>
+
+  <!--
+    formControlName links this input directly
+    to form.controls.studentId.
+
+    Angular automatically keeps the UI and
+    FormGroup synchronized.
+  -->
+  <input
+    id="studentId"
+    formControlName="studentId"
+    placeholder="e.g. STU-1234"
+  />
+
+  <!--
+    Only display the validation error after
+    the user has interacted with the field.
+  -->
+  @if (form.controls.studentId.touched &&
+       form.controls.studentId.invalid) {
+
+    <span class="error">
+      Enter a valid Student ID (format: STU-0000)
+    </span>
+
+  }
+
+  <!-- =========================
+       Course ID
+       ========================= -->
+
+  <label for="courseId">Course ID</label>
+
+  <input
+    id="courseId"
+    formControlName="courseId"
+    placeholder="e.g. 1 (TMS course primary key)"
+  />
+
+  @if (form.controls.courseId.touched &&
+       form.controls.courseId.invalid) {
+
+    <span class="error">
+      Course ID is required
+    </span>
+
+  }
+
+  <!-- =========================
+       Term
+       ========================= -->
+
+  <label for="term">Term</label>
+
+  <input
+    id="term"
+    formControlName="term"
+  />
+
+  <!-- =========================
+       Optional Notes
+       ========================= -->
+
+  <label for="notes">Notes (optional)</label>
+
+  <textarea
+    id="notes"
+    formControlName="notes">
+  </textarea>
+
+  <!-- =========================
+       Dynamic Backup Courses
+       ========================= -->
+
+  <h3>Backup Courses</h3>
+
+  <!--
+    Iterate through every FormControl inside
+    the FormArray.
+
+    $index is Angular's built-in loop index.
+
+    track $index tells Angular how to identify
+    each row efficiently.
+  -->
+  @for (backup of backups.controls; track $index) {
+
+    <div class="backup-row">
+
+      <!--
+        Unlike formControlName,
+        [formControl] binds directly to an
+        existing FormControl object.
+      -->
+      <input
+        [formControl]="backup"
+        [placeholder]="'Backup course ' + ($index + 1)"
+      />
+
+      <!--
+        IMPORTANT:
+        Without type="button",
+        every button inside a form becomes
+        a submit button by default.
+      -->
+      <button
+        type="button"
+        (click)="removeBackup($index)">
+
+        Remove
+
+      </button>
+
+    </div>
+
+  }
+
+  <!--
+    Add another FormControl into the FormArray.
+  -->
+  <button
+    type="button"
+    (click)="addBackup()">
+
+    Add Backup Course
+
+  </button>
+
+  <hr />
+
+  <!--
+    Disable submission while the form
+    contains validation errors.
+  -->
+  <button
+    type="submit"
+    [disabled]="form.invalid">
+
+    Confirm Enrollment
+
+  </button>
+
+</form>
+
+}
