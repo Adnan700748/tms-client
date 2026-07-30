@@ -1,0 +1,26 @@
+.enrollment-card {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  padding: 12px;
+  margin-bottom: 10px;
+
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  background: #fff;
+}
+
+.status {
+  font-weight: 600;
+}
+
+button {
+  padding: 6px 12px;
+  cursor: pointer;
+}
+
+.error {
+  color: red;
+  font-weight: 600;
+}
