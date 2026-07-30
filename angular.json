@@ -13,6 +13,9 @@
         "@schematics/angular:component": {
           "style": "scss",
           "type":"component"
+        },
+        "@schematics/angular:service": {
+          "type": "service"
         }
       },
       "root": "",
