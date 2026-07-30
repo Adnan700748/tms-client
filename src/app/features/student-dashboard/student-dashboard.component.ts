@@ -4,11 +4,12 @@ import { rxResource } from '@angular/core/rxjs-interop';
 import { CourseCardComponent } from '../../ui/course-card/course-card';
 import { Course } from '../../models/course.model';
 import { CourseService } from '../../services/course.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-student-dashboard',
   standalone: true,
-  imports: [CourseCardComponent],
+  imports: [CourseCardComponent, RouterLink],
   templateUrl: './student-dashboard.component.html',
   styleUrl: './student-dashboard.component.scss',
 })
