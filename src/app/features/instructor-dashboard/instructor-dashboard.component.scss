@@ -1,52 +1,70 @@
 .dashboard-header {
-padding: 1.5rem;
+  padding: 1.5rem;
 }
+
 .kpi-row {
-display: flex;
-gap: 1.5rem;
-margin-top: 1rem;
+  display: flex;
+  gap: 1.5rem;
+  margin-top: 1rem;
 }
+
 .kpi-card {
-padding: 1rem 1.5rem;
-border-radius: 8px;
-background: #1e293b;
-color: #e2e8f0;
-display: flex;
-flex-direction: column;
-min-width: 160px;
+  padding: 1rem 1.5rem;
+  border-radius: 8px;
+  background: #1e293b;
+  color: #e2e8f0;
+  display: flex;
+  flex-direction: column;
+  min-width: 160px;
 }
+
 .kpi-card.pending {
-border-left: 4px solid #d97706;
+  border-left: 4px solid #d97706;
 }
+
 .kpi-value {
-font-size: 2rem;
-font-weight: 700;
+  font-size: 2rem;
+  font-weight: 700;
 }
+
 .kpi-label {
-font-size: 0.85rem;
-color: #94a3b8;
-margin-top: 0.25rem;
+  font-size: 0.85rem;
+  color: #94a3b8;
+  margin-top: 0.25rem;
 }
+
 .chart-section {
-margin-top: 2rem;
-padding: 0 1.5rem;
+  margin-top: 2rem;
+  padding: 0 1.5rem;
 }
+
+/*
+ * NOTE: This min-height prevents a CLS (Cumulative Layout Shift) bug.
+ *
+ * The @defer (on viewport) trigger uses the browser's IntersectionObserver.
+ * If .skeleton-chart renders at 0px height, the observer immediately reports
+ * it as "in viewport", causing the deferred chunk to download immediately.
+ *
+ * Reserving space keeps the layout stable and allows the deferred loading
+ * behavior to work as intended.
+ */
 .skeleton-chart {
-min-height: 250px;
-display: flex;
-align-items: center;
-justify-content: center;
-background: #1e293b;
-border: 2px dashed #334155;
-border-radius: 8px;
-color: #64748b;
-font-size: 1rem;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #1e293b;
+  border: 2px dashed #334155;
+  border-radius: 8px;
+  color: #64748b;
+  font-size: 1rem;
 }
+
 .spinner {
-min-height: 250px;
-display: flex;
-align-items: center;
-justify-content: center;
-color: #94a3b8;
-font-size: 1rem;
+  min-height: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #94a3b8;
+  font-size: 1rem;
 }
