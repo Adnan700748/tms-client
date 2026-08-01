@@ -12,14 +12,19 @@
     </span>
 
     <span class="status">
-      {{ enrollment.status }}
-    </span>
+  {{ enrollment.status }}
+</span>
 
-    @if (enrollment.status === 'Pending') {
-      <button (click)="onApprove(enrollment.id)">
-        Approve
-      </button>
-    }
+@if (enrollment.status === 'Pending') {
+  <button (click)="onApprove(enrollment.id)">
+    Approve
+  </button>
+}
+@else {
+  <span class="approved">
+    ✔ Approved
+  </span>
+}
 
   </div>
 
