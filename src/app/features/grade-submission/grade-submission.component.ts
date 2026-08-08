@@ -18,8 +18,8 @@ import { GradeService, GradePayload } from '../../services/grade.service';
     MatFormFieldModule,
     MatInputModule,
   ],
-  templateUrl: './grade-submission.component.html',
-  styleUrl: './grade-submission.component.scss',
+   templateUrl: './grade-submission.component.html',
+  styleUrls: ['./grade-submission.component.scss']
 })
 export class GradeSubmissionComponent {
   private api = inject(GradeService);
