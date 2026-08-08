@@ -1,16 +1,21 @@
-import { TestBed } from '@angular/core/testing';
+import { inject, Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-import { GradeService } from './grade.service';
+export interface GradePayload {
+  studentId: number;
+  courseId: number;
+  score: number;
+}
 
-describe('GradeService', () => {
-  let service: GradeService;
+@Injectable({
+  providedIn: 'root',
+})
+export class GradeService {
+  private http = inject(HttpClient);
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(GradeService);
-  });
-
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  postGrade(payload: GradePayload): Observable<{ id: string; success: boolean }>
+   {
+    return this.http.post<{ id: string; success: boolean }>('/api/grades', payload);
+   }
+}
