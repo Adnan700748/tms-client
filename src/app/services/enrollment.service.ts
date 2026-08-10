@@ -8,14 +8,18 @@ export class EnrollmentService {
 
   private http = inject(HttpClient);
 
-  private baseUrl = 'http://localhost:5187/api/enrollments';
+  private baseUrl = "http://localhost:5187/api/v2/enrollments";
 
   getAll(): Observable<Enrollment[]> {
     return this.http.get<Enrollment[]>(this.baseUrl);
   }
 
   approve(id: string): Observable<void> {
-    return this.http.post<void>(`${this.baseUrl}/${id}/approve`, {});
+  return this.http.post<void>(`${this.baseUrl}/${id}/approve`, {});
   }
+
+  reject(id: string): Observable<void> {
+  return this.http.post<void>(`${this.baseUrl}/${id}/reject`, {});
+}
 
 }
