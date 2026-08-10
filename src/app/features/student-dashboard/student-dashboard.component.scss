@@ -1,25 +1,63 @@
 .dashboard {
-  margin-bottom: 2rem;
+  max-width: 1100px;
+  margin: 2rem auto;
+  padding: 1rem;
+}
+
+.dashboard h1 {
+  color: #1f2937;
+  margin-bottom: 0.5rem;
+}
+
+.dashboard p {
+  margin: 0.4rem 0;
+}
+
+.dashboard a {
+  text-decoration: none;
+  color: #2563eb;
+  font-weight: 600;
+}
+
+.dashboard a:hover {
+  text-decoration: underline;
 }
 
 .grid {
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
   gap: 1rem;
   margin-top: 1rem;
 }
 
-.empty-state {
+.spinner,
+.error,
+.empty-state,
+.selection-hint {
   padding: 1rem;
-  border: 1px dashed #bbb;
+  margin-top: 1rem;
   border-radius: 8px;
+}
+
+.spinner {
+  background: #eff6ff;
+  color: #1d4ed8;
+}
+
+.error {
+  background: #fee2e2;
+  color: #b91c1c;
+}
+
+.empty-state {
+  background: #f3f4f6;
+  color: #374151;
   text-align: center;
-  color: #666;
 }
 
 .selection-hint {
   margin-top: 1.5rem;
-  padding: .75rem;
-  border-left: 4px solid #1976d2;
-  background: #f5f5f5;
+  background: #ecfdf5;
+  color: #065f46;
+  border-left: 4px solid #10b981;
 }
