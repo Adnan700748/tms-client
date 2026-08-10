@@ -1,13 +1,11 @@
 import { computed, inject } from '@angular/core';
-import {signalStore, withComputed, withMethods, patchState, withState, } from '@ngrx/signals';
-
-import {withEntities, setAllEntities, updateEntity, } from '@ngrx/signals/entities';
-
+import { signalStore, withComputed, withMethods, patchState, withState } from '@ngrx/signals';
+import { withEntities, setAllEntities, updateEntity } from '@ngrx/signals/entities';
 import { rxMethod } from '@ngrx/signals/rxjs-interop';
-
-import {pipe, concatMap, tap, catchError, EMPTY, } from 'rxjs';
+import { pipe, concatMap, tap, catchError, EMPTY, switchMap } from 'rxjs';
 
 import { EnrollmentService } from '../services/enrollment.service';
+import { LiveSyncService } from '../services/live-sync.service'; // Import this
 import { Enrollment } from '../models/enrollment.model';
 
 export const EnrollmentStore = signalStore(
@@ -29,7 +27,27 @@ export const EnrollmentStore = signalStore(
     ),
   })),
 
-  withMethods((store, api = inject(EnrollmentService)) => ({
+  // Inject BOTH services here
+  withMethods((store, api = inject(EnrollmentService), sync = inject(LiveSyncService)) => ({
+
+    // Listen for real-time updates from SignalR
+    listenForLiveUpdates: rxMethod<void>(
+      pipe(
+        tap(() => sync.connect()),
+        switchMap(() => sync.events$),
+        tap((event) => {
+          patchState(
+            store,
+            updateEntity({
+              id: event.id,
+              changes: {
+                status: event.status
+              }
+            })
+          );
+        })
+      )
+    ),
 
     // Loads all enrollments from the API.
     loadEnrollments: rxMethod<void>(
@@ -40,10 +58,8 @@ export const EnrollmentStore = signalStore(
             error: null,
           })
         ),
-
         concatMap(() =>
           api.getAll().pipe(
-
             tap((rows) =>
               patchState(
                 store,
@@ -53,13 +69,11 @@ export const EnrollmentStore = signalStore(
                 }
               )
             ),
-
             catchError((err) => {
               patchState(store, {
                 isLoading: false,
                 error: err.message,
               });
-
               return EMPTY;
             })
           )
@@ -70,7 +84,6 @@ export const EnrollmentStore = signalStore(
     // Optimistically approves an enrollment.
     approveEnrollment: rxMethod<string>(
       pipe(
-
         tap((id) => {
           patchState(
             store,
@@ -82,12 +95,9 @@ export const EnrollmentStore = signalStore(
             })
           );
         }),
-
         concatMap((id) =>
           api.approve(id).pipe(
-
             catchError(() => {
-
               patchState(
                 store,
                 updateEntity({
@@ -97,12 +107,45 @@ export const EnrollmentStore = signalStore(
                   },
                 })
               );
-
               patchState(store, {
-                error:
-                  'Server rejected the approval. Check enrollment constraints.',
+                error: 'Server rejected the approval. Check enrollment constraints.',
               });
+              return EMPTY;
+            })
+          )
+        )
+      )
+    ),
 
+    // Rejects an enrollment with optimistic update
+    rejectEnrollment: rxMethod<string>(
+      pipe(
+        tap(id => {
+          patchState(
+            store,
+            updateEntity({
+              id,
+              changes: {
+                status: 'Rejected'
+              }
+            })
+          );
+        }),
+        concatMap(id =>
+          api.reject(id).pipe(
+            catchError(() => {
+              patchState(
+                store,
+                updateEntity({
+                  id,
+                  changes: {
+                    status: 'Pending'
+                  }
+                })
+              );
+              patchState(store, {
+                error: 'Server rejected the request.'
+              });
               return EMPTY;
             })
           )
