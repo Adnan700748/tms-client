@@ -2,6 +2,7 @@ import { Component, OnInit, inject } from '@angular/core';
 import { EnrollmentStore } from './store/enrollment.store';
 import { RouterOutlet } from "@angular/router";
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
