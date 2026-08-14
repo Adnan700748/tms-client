@@ -1,6 +1,7 @@
 import { Component, OnInit, inject } from '@angular/core';
 import { EnrollmentStore } from './store/enrollment.store';
 
+
 @Component({
   selector: 'app-root',
   standalone: true,
