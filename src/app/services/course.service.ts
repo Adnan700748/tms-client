@@ -22,4 +22,7 @@ export class CourseService {
         map(response => response.items)
       );
   }
+  delete(id: number) {
+  return this.http.delete<void>(`${this.base}/${id}`);
+}
 }
