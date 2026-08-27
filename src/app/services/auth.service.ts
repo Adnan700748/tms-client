@@ -1,22 +1,36 @@
-import { Service, inject, signal } from '@angular/core';
+import { Injectable, inject, signal } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { firstValueFrom } from 'rxjs';
 
 export interface TmsUser {
+  email: string;
   displayName: string;
   role: string;
 }
 
 export interface LoginRequest {
-  username: string;
+  email: string;
   password: string;
 }
 
-@Service()
+export interface AuthResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+@Injectable({
+  providedIn: 'root'
+})
 export class AuthService {
   private http = inject(HttpClient);
 
+  private accessToken = signal<string | null>(null);
+
   currentUser = signal<TmsUser | null>(null);
+
+  getAccessToken(): string | null {
+    return this.accessToken();
+  }
 
   hasRole(role: string): boolean {
     const user = this.currentUser();
@@ -25,17 +39,29 @@ export class AuthService {
   }
 
   async login(credentials: LoginRequest): Promise<void> {
-    // The server sets the HttpOnly authentication cookie.
-    // JavaScript never receives or stores the raw token.
-    await firstValueFrom(
-      this.http.post<void>('/api/auth/login', credentials)
+    const res = await firstValueFrom(
+      this.http.post<AuthResponse>('http://localhost:5187/api/auth/login', credentials)
     );
 
-    // The browser automatically sends the HttpOnly cookie.
-    const user = await firstValueFrom(
-      this.http.get<TmsUser>('/api/auth/me')
+    this.accessToken.set(res.accessToken);
+
+    // Decode JWT payload
+    const payload = JSON.parse(
+      atob(res.accessToken.split('.')[1])
     );
 
-    this.currentUser.set(user);
+    this.currentUser.set({
+      email: payload.email || payload.sub,
+      displayName: payload.name || payload.email || 'User',
+      role:
+        payload[
+          'http://schemas.microsoft.com/ws/2008/06/identity/claims/role'
+        ] || payload.role || 'Student'
+    });
+  }
+
+  logout(): void {
+    this.accessToken.set(null);
+    this.currentUser.set(null);
   }
 }

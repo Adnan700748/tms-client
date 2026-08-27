@@ -1,0 +1,24 @@
+<h1>Course Administration</h1>
+
+@for (course of courses; track course.id) {
+
+  <div class="course-card">
+    <h3>{{ course.code }}</h3>
+
+    <p>{{ course.title }}</p>
+
+    @if (auth.hasRole('Admin')) {
+      <button
+        (click)="deleteCourse(course.id)"
+        class="btn-danger">
+
+        Delete Course
+
+      </button>
+    } @else {
+      <p>You do not have permission to delete this course.</p>
+    }
+
+  </div>
+
+}
