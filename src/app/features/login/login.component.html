@@ -1,0 +1,43 @@
+
+<div class="login-container">
+  <div class="login-card">
+    <h1>TMS Login</h1>
+    <p>Sign in to your Training Management System</p>
+
+    <form (ngSubmit)="login()">
+
+      <label>Email</label>
+      <input
+        type="email"
+        name="email"
+        [(ngModel)]="email"
+        required
+        placeholder="Enter your email"
+      />
+
+      <label>Password</label>
+      <input
+        type="password"
+        name="password"
+        [(ngModel)]="password"
+        required
+        placeholder="Enter your password"
+      />
+
+      @if (errorMessage) {
+        <p class="error">
+          {{ errorMessage }}
+        </p>
+      }
+
+      <button
+        type="submit"
+        [disabled]="loading"
+      >
+        {{ loading ? 'Logging in...' : 'Login' }}
+      </button>
+
+    </form>
+  </div>
+</div>
+
