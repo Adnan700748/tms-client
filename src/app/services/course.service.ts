@@ -1,28 +1,28 @@
 import { Service, inject } from "@angular/core";
 import { HttpClient } from "@angular/common/http";
 import { map } from "rxjs/operators";
-import { Course, CourseDetail, PagedResponse } from "../models/course.model";
 
-// @Service() means Angular creates one instance of this service
-// and shares it across the entire app. This is similar to AddSingleton<T>() in .NET.
+import { environment } from '../../environments/environment';
+import { Course, PagedResponse } from '../models/course.model';
 @Service()
 export class CourseService {
-    // inject(HttpClient) requests Angular's HTTP client
+    
     private http = inject(HttpClient);
-    private baseUrl = "http://localhost:5187/api/v1/courses";
+    private readonly base = `${environment.apiUrl}/courses`;
 
-    getAll(page = 1, pageSize = 50) {
-        return this.http
-            .get<PagedResponse<Course>>(this.baseUrl, {
-                params: {
-                    page: page.toString(),
-                    pageSize: pageSize.toString(),
-                },
-            })
-            .pipe(map((p) => p.items));
-    }
-
-    getById(id: string) {
-        return this.http.get<CourseDetail>(`${this.baseUrl}/${id}`);
-    }
+  getAll() {
+    return this.http
+      .get<PagedResponse<Course>>(this.base, {
+        params: {
+          page: '1',
+          pageSize: '50'
+        }
+      })
+      .pipe(
+        map(response => response.items)
+      );
+  }
+  delete(id: number) {
+  return this.http.delete<void>(`${this.base}/${id}`);
+}
 }
